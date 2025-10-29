@@ -32,8 +32,7 @@ public class SetorServiceImpl implements SetorService {
 
     @Override
     public List<SetorDTO> findAll() {
-        List<Setor> setores = setorRepository.findAllWithFuncionarios()
-            .orElseThrow(() -> new RegraNegocioException("Nenhum setor cadastrado"));
+        List<Setor> setores = setorRepository.findAllWithFuncionarios();
 
        return setores.stream().map (setor -> {
 
