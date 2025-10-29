@@ -14,6 +14,5 @@ public class FuncionarioRequestDTO {
     
     private Integer id;
     private String nome;
-    private Integer idProjeto;
     private Integer idSetor;
 }

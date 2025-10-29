@@ -4,13 +4,13 @@ import java.util.List;
 
 
 import com.example.ac2.dtos.FuncionarioRequestDTO;
-import com.example.ac2.models.Funcionario;
+import com.example.ac2.dtos.ProjetoDTO;
 
 public interface FuncionarioService {
 
     void salvar(FuncionarioRequestDTO funcionarioRequestDTO); 
 
 
-    List<Funcionario> findByIdFetchProjetos(Integer id);
+    List<ProjetoDTO> buscarProjetosPorFuncionario(Integer idFuncionario);
     
 }

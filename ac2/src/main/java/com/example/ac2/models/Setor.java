@@ -16,6 +16,7 @@ import lombok.ToString;
 
 @Entity
 @Data
+//@Table(name = "setores")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

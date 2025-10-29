@@ -11,29 +11,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ac2.dtos.FuncionarioRequestDTO;
-import com.example.ac2.models.Funcionario;
+import com.example.ac2.dtos.ProjetoDTO;
 import com.example.ac2.services.FuncionarioService;
+
+import lombok.RequiredArgsConstructor;
 
 
 
 @RestController
-@RequestMapping("/funcionarios")
+@RequestMapping("/api/funcionarios")
+@RequiredArgsConstructor
 public class FuncionarioController {
     
-    private FuncionarioService funcionarioService;
-
-    public FuncionarioController(FuncionarioService funcionarioService) {
-        this.funcionarioService = funcionarioService;
-    }
+    private final FuncionarioService funcionarioService;
 
     @PostMapping
     public void adicionarFuncionario(@RequestBody FuncionarioRequestDTO funcionarioRequestDTO) {
         funcionarioService.salvar(funcionarioRequestDTO);
     }
     
-    @GetMapping("{id}")
-    public List<Funcionario> findByIdFetchProjetos(@PathVariable Integer id) {
-    return funcionarioService.findByIdFetchProjetos(id);
+    @GetMapping("{idFuncionario}/projetos")
+    public List<ProjetoDTO> buscarProjetos(@PathVariable Integer idFuncionario) {
+    return funcionarioService.buscarProjetosPorFuncionario(idFuncionario);
     }   
     
 }

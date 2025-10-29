@@ -17,6 +17,5 @@ public class ProjetoRequestDTO {
     private String descricao;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private Integer idFuncionario;
     
 }

@@ -1,5 +1,6 @@
 package com.example.ac2.dtos;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,5 @@ public class SetorRequestDTO {
     
     private Integer id;
     private String nome;
-    private Integer idFuncionario;
 
 }

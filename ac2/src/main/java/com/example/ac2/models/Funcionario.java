@@ -3,7 +3,6 @@ package com.example.ac2.models;
 import java.util.List;
 
 import jakarta.persistence.ManyToOne;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -28,6 +27,8 @@ public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    // @Column(length = 100, nullable = false)
     private String nome;
 
     @ManyToMany(mappedBy = "funcionarios", fetch = jakarta.persistence.FetchType.EAGER)

@@ -13,7 +13,6 @@ public class FuncionarioDTO {
 
     private Integer id;
     private String nome;
-    private ProjetoDTO projetos;
-    private SetorDTO setores;
+    private Integer idSetor;
     
 }

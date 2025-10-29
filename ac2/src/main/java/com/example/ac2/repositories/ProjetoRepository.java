@@ -7,12 +7,13 @@ import com.example.ac2.models.Projeto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ProjetoRepository extends JpaRepository<Projeto, Integer> {
 
     @Query("SELECT p FROM Projeto p LEFT JOIN FETCH p.funcionarios WHERE p.id = :id")
-    List<Projeto> findByIdFetchFuncionarios(Integer id);
+    Optional<Projeto> findByIdFetchFuncionarios(Integer id);
 
     List<Projeto> findByDataInicioBetween(LocalDate dataInicio, LocalDate dataFim);
 

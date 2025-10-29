@@ -31,8 +31,10 @@ public class Projeto {
     @Column(length = 200, nullable = false)
     private String descricao;
 
-    @Column(nullable = false)
+    @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
+
+    @Column(name = "data_fim", nullable = false)
     private LocalDate dataFim;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = jakarta.persistence.FetchType.EAGER)

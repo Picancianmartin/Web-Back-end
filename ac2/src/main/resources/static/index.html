@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Projetos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        form div {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box; /* Garante que o padding não quebre o layout */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Atividade AC2</h1>
+
+    <h2>Adicionar Novo Projeto</h2>
+    <form id="form-projeto">
+        <div>
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" required>
+        </div>
+        <div>
+            <label for="dataInicio">Data de Início:</label>
+            <input type="date" id="dataInicio" required>
+        </div>
+        <div>
+            <label for="dataFim">Data de Fim:</label>
+            <input type="date" id="dataFim" required>
+        </div>
+        <button type="submit">Salvar Projeto</button>
+    </form>
+
+    <h2>Projetos Cadastrados</h2>
+    <table id="tabela-projetos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Data de Início</th>
+                <th>Data de Fim</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-projetos-body">
+            </tbody>
+    </table>
+
+    <script>
+        const apiUrl = 'http://localhost:8080/api/projetos';
+
+        const formProjeto = document.getElementById('form-projeto');
+        const tabelaProjetosBody = document.getElementById('tabela-projetos-body');
+
+        async function fetchProjetos() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Falha ao buscar projetos');
+                }
+                const projetos = await response.json();
+
+                tabelaProjetosBody.innerHTML = '';
+
+                projetos.forEach(projeto => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${projeto.id}</td>
+                        <td>${projeto.descricao}</td>
+                        <td>${projeto.dataInicio}</td>
+                        <td>${projeto.dataFim}</td>
+                    `;
+                    tabelaProjetosBody.appendChild(tr);
+                });
+
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Não foi possível carregar os projetos.');
+            }
+        }
+
+     
+        async function handleFormSubmit(event) {
+            event.preventDefault(); 
+
+            // Pega os valores do formulário
+            const descricao = document.getElementById('descricao').value;
+            const dataInicio = document.getElementById('dataInicio').value;
+            const dataFim = document.getElementById('dataFim').value;
+
+            const novoProjeto = {
+                descricao: descricao,
+                dataInicio: dataInicio,
+                dataFim: dataFim
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(novoProjeto),
+                });
+
+                if (response.status === 201) { // 201 Created
+                    alert('Projeto salvo com sucesso!');
+                    formProjeto.reset(); 
+                    fetchProjetos(); 
+                } else {
+                    const errorData = await response.json();
+                    alert('Erro ao salvar: ' + (errorData.errors ? errorData.errors.join(', ') : 'Erro desconhecido'));
+                }
+
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro de conexão ao salvar o projeto.');
+            }
+        }
+
+        formProjeto.addEventListener('submit', handleFormSubmit);
+
+        document.addEventListener('DOMContentLoaded', fetchProjetos);
+
+    </script>
+</body>
+</html>
