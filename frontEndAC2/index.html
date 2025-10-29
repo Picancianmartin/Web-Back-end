@@ -31,7 +31,7 @@
         input[type="text"], input[type="date"] {
             width: 100%;
             padding: 8px;
-            box-sizing: border-box; /* Garante que o padding não quebre o layout */
+            box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
@@ -97,13 +97,13 @@
         <tbody id="tabela-projetos-body">
             </tbody>
     </table>
-
-    <script>
-        const apiUrl = 'http://localhost:8080/api/projetos';
+<script>
+        const apiUrl = 'http://localhost:8080/api/projetos'; 
 
         const formProjeto = document.getElementById('form-projeto');
         const tabelaProjetosBody = document.getElementById('tabela-projetos-body');
 
+        
         async function fetchProjetos() {
             try {
                 const response = await fetch(apiUrl);
@@ -132,10 +132,10 @@
         }
 
      
+       
         async function handleFormSubmit(event) {
             event.preventDefault(); 
 
-            // Pega os valores do formulário
             const descricao = document.getElementById('descricao').value;
             const dataInicio = document.getElementById('dataInicio').value;
             const dataFim = document.getElementById('dataFim').value;
@@ -155,25 +155,33 @@
                     body: JSON.stringify(novoProjeto),
                 });
 
-                if (response.status === 201) { // 201 Created
+                
+                if (response.status === 201) {
                     alert('Projeto salvo com sucesso!');
                     formProjeto.reset(); 
                     fetchProjetos(); 
-                } else {
+                
+                
+                } else if (response.status === 400) {
+                    
                     const errorData = await response.json();
-                    alert('Erro ao salvar: ' + (errorData.errors ? errorData.errors.join(', ') : 'Erro desconhecido'));
+                    
+                    
+                    const mensagem = errorData.erro || "Ocorreu um erro de validação.";
+                    alert('Erro: ' + mensagem);
+
+                
+                } else {
+                    alert('Erro ao salvar: ' + response.statusText);
                 }
 
             } catch (error) {
-                console.error('Erro:', error);
+                console.error('Erro de conexão:', error);
                 alert('Erro de conexão ao salvar o projeto.');
             }
         }
 
         formProjeto.addEventListener('submit', handleFormSubmit);
-
         document.addEventListener('DOMContentLoaded', fetchProjetos);
 
     </script>
-</body>
-</html>

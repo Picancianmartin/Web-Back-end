@@ -15,6 +15,7 @@ import com.example.ac2.models.Projeto;
 import com.example.ac2.repositories.FuncionarioRepository;
 import com.example.ac2.repositories.ProjetoRepository;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,6 +29,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 
     @Override
     public void salvar(ProjetoRequestDTO projetoRequestDTO) {
+        if (!StringUtils.isNotBlank(projetoRequestDTO.getDescricao())) {
+            throw new RegraNegocioException("A descrição do projeto é obrigatória.");
+        }
+
         Projeto projeto = new Projeto();
         projeto.setDescricao(projetoRequestDTO.getDescricao());
         projeto.setDataInicio(projetoRequestDTO.getDataInicio());
